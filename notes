@@ -1,0 +1,71 @@
+"https://www.youtube.com/watch?v=3qlnR9hK-lQ"
+
+1.  Create folder => sequelize
+2.  Ensure connecttion to database (MariaBD).
+3.  Create entry file app.js
+4.  Run npm init -y.
+5.  npm install sequelize and mariadb and mysql2 from terminal
+6.  To create connection we will use <sequelize_cli>
+7.  npm install -g sequelize-cli
+8.  run sequelize init command to initilaize sequelize in our project and create a bunch of stuff:
+
+        1. config.json => holds a couple of base connections ie development, production and test
+        2. You should populate password and username. You can also create the database as well so we create "sequelize_test"
+        3. The models folder already has "index.js" file for creating sequelize instance and imports the databse models
+
+9.  Remove last line of index.js
+10. create database from sequelize-cli. Typing sequelize shows all command
+11. run command sequelize db:create to create the database that is shown in the config
+12. To create table in databse eg users table with name, role and email
+13. Use sequelize cli to create model with the following commands."sequelize model:generate --name User -- attributes name:string, email:string, role:string (avoid spaces)
+14. We go to app.js to import the sequelize connection and create the table (with sync)
+15. Make the attributes: name, email and role non-nullable
+16. Go to user.js (model) and add option tableName to ensure correct table names and also edit the type by adding an object and allowNull
+17. install express
+18. Create route for user
+19. Add another attribute to the user => uuid. This ensures the public does not know the number of users that we have.
+20. Go to the user model and add the attribute uuid
+21. The new attribute will be added; however, the user is deleted. Each time we sync the databse the user is deleted. Therefore, instead of using <sync> we will use <migrations>. We will use migration to create the table instead of syncing.
+22. In migrations create-user file, change the names from uppercase User to lowercase User.
+23. Chaneg the type from Sequelize to DataTypes.
+24. Go to the terminal and drop the database with sequelize db:drop command
+25. Recreate DB with "sequelize db:create<do!!>
+26. In app.js replace sequelize sync with sequelize authenticate
+27. To create tables run the migration => "sequelize db:migrate <do!!>
+28. Run "nodemon app.js"
+29. Run create user in Postman/Thunder Client
+30. To hide the id from users, go to User model. Override the toJSON method
+
+######
+
+30. Create another DB model called <posts>
+31. Use sequelize cli to create model with the following commands."sequelize model:generate --name Post -- attributes body:string
+32. Update model file to include UUID and ensure variables are not null
+33. Go to migration file for post and update the DataTypes and add uuid. Change post to lowe case
+34. run sequelize db:migrate:status to determine the status
+35. Run sequelize db:migrate
+
+#####
+
+36. Include id of user in the post because every post must have a user. Every post belongs to the user and the user can have a lot of posts. <association>
+37. Go to the Post model
+38. Destructure user model
+39. Sequelize will look for id of UserId but we need "userId" so we need to override the belongsTo function.
+40. Create association in User model as well.
+41. Add this to migration as well.
+42. Re-run the migration => "sequelize db:migrate:undo"
+43. Re-migrate
+44. run desc posts in MariaDB
+45. Create an end point to create a post
+46. To change User to lower case in the output when we try to read all posts with users included. Go to the Post model and redefine the association
+
+### Validation
+
+1. Need validation to avoid creating empty posts
+2. Add validation to user model.
+
+## seed
+
+1. Drop table with truncate command
+2. Update seed file with more data.
+3. run the command: sequelize db:seed:all
